@@ -22,5 +22,17 @@ public class Pawn {
     public boolean multipleJump() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        String singlePawn = "";
+        if (isWhite) {
+            singlePawn = "W";
+        } else {
+            singlePawn = "B";
+        }
+
+        return singlePawn;
+    }
 }
 
