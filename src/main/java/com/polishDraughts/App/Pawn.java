@@ -1,11 +1,13 @@
 package com.polishDraughts.App;
 
-public class Pawn {
+public class Pawn
+{
     private Coordinates position;
     private boolean isCrowned;
     private boolean isWhite;
 
-    public Pawn(Coordinates position, boolean isWhite) {
+    public Pawn(Coordinates position, boolean isWhite)
+    {
         this.position = position;
         this.isCrowned = false;
         this.isWhite = isWhite;
@@ -24,7 +26,8 @@ public class Pawn {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         String singlePawn = "";
         if (isWhite) {
             singlePawn = "W";
