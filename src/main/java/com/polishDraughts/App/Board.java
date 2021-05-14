@@ -23,13 +23,11 @@ public class Board {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
-                        Coordinates coordinates = new Coordinates(0, i);
-                        this.fields[i][j] = new Pawn(coordinates, true);
+                        setSinglePawn(i, j, true);
                     }
                 } else {
                     if(j % 2 != 0) {
-                        Coordinates coordinates = new Coordinates(0, i);
-                        this.fields[i][j] = new Pawn(coordinates, true);
+                        setSinglePawn(i, j, true);
                     }
                 }
             }
@@ -41,18 +39,21 @@ public class Board {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
-                        Coordinates coordinates = new Coordinates(i, j);
-                        this.fields[i][j] = new Pawn(coordinates, false);
+                            setSinglePawn(i, j, false);
                     }
                 } else {
                     if(j % 2 != 0) {
-                        Coordinates coordinates = new Coordinates(i, j);
-                        this.fields[i][j] = new Pawn(coordinates, false);
+                        setSinglePawn(i, j, false);
                     }
                 }
 
             }
         }
+    }
+
+    private void setSinglePawn(int i, int j, boolean isWhite) {
+        Coordinates coordinates = new Coordinates(i, j);
+        this.fields[i][j] = new Pawn(coordinates, isWhite);
     }
 
     public Pawn[][] getFields() {
