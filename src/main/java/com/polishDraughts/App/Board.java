@@ -2,9 +2,11 @@ package com.polishDraughts.App;
 
 public class Board {
     private Pawn[][] fields;
+    private int size;
 
     public Board(int size) {
         this.fields = new Pawn[size][size];
+        this.size = size;
         this.setWhites();
         this.setBlack();
     }
@@ -19,7 +21,8 @@ public class Board {
     }
 
     private void setWhites() {
-        for (int i = 0; i < 3; i++) {
+        int size = (int)(this.size * 0.4);
+        for (int i = 0; i < size; i++) {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
@@ -35,11 +38,13 @@ public class Board {
     }
 
     private void setBlack() {
-        for (int i = this.fields.length - 1; i >= 7; i--) {
+        int size = (int)(this.size * 0.4);
+
+        for (int i = this.fields.length - 1; i >= (this.fields.length - size); i--) {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
-                            setSinglePawn(i, j, false);
+                        setSinglePawn(i, j, false);
                     }
                 } else {
                     if(j % 2 != 0) {
