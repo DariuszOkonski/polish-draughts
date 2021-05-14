@@ -21,8 +21,8 @@ public class Board {
     }
 
     private void setWhites() {
-        int size = (int)(this.size * 0.4);
-        for (int i = 0; i < size; i++) {
+        int playersArea = (int)(this.size * 0.4);
+        for (int i = 0; i < playersArea; i++) {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
@@ -38,9 +38,9 @@ public class Board {
     }
 
     private void setBlack() {
-        int size = (int)(this.size * 0.4);
+        int playersArea = (int)(this.size * 0.4);
 
-        for (int i = this.fields.length - 1; i >= (this.fields.length - size); i--) {
+        for (int i = this.fields.length - 1; i >= (this.fields.length - playersArea); i--) {
             for (int j = 0; j < this.fields[i].length; j++) {
                 if(i % 2 == 0) {
                     if(j % 2 == 0) {
