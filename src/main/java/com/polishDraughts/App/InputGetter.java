@@ -19,20 +19,28 @@ public class InputGetter {
     public static void processMove() {
         boolean moveIsCorrect = false;
         String[] inputData = null;
+        boolean fieldIsEmpty = false;
 
-        while (!moveIsCorrect){
+        while (!moveIsCorrect || !fieldIsEmpty){
+
             inputData = getInputData();
             moveIsCorrect = isInputValid(inputData);
+
+            System.out.println(moveIsCorrect + " move in range");
+            if (moveIsCorrect) {
+                int col = Util.colsDictionary.get(inputData[0]);
+                int row = Util.rowsDictionary.get(inputData[1]);
+
+                Coordinates coordinates = new Coordinates(row, col);
+
+                Pawn field = Board.INSTANCE.getField(coordinates);
+                fieldIsEmpty = field == null;
+                System.out.println(fieldIsEmpty + " field empty");
+
+            }
         }
 
-        int col = Util.colsDictionary.get(inputData[0]);
-        int row = Util.rowsDictionary.get(inputData[1]);
-
-        Coordinates coordinates = new Coordinates(col, row);
-
-        System.out.println("======================");
-        System.out.println(Board.INSTANCE.getField(coordinates));
-        System.out.println(Board.INSTANCE.getField(coordinates).getClass());
+        System.out.println("Correct");
     }
 
     public static boolean isInputValid(String[] inputData) {
