@@ -21,6 +21,7 @@ public class InputGetter {
         String[] inputData = null;
         boolean fieldIsEmpty = false;
 
+        System.out.println(Game.whiteTurn?"white turn":"black turn");
         while (!moveIsCorrect || !fieldIsEmpty){
 
             inputData = getInputData();
@@ -32,13 +33,17 @@ public class InputGetter {
                 int row = Util.rowsDictionary.get(inputData[1]);
 
                 Coordinates coordinates = new Coordinates(row, col);
-
+                System.out.println(coordinates.toString() + " field empty");
                 Pawn field = Board.INSTANCE.getField(coordinates);
+                System.out.println(field==null ? "empty" : field.displayPawn());
                 fieldIsEmpty = field == null;
-                System.out.println(fieldIsEmpty + " field empty");
 
+                Coordinates[] possibleMoves = coordinates.getBasicMoves(Game.whiteTurn);
+                System.out.println(coordinates);
+                System.out.println(Arrays.toString(possibleMoves));
             }
         }
+
 
         System.out.println("Correct");
     }

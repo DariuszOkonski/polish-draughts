@@ -47,6 +47,16 @@ public class Pawn {
     public String toString() {
         return this.character;
     }
+
+    public String displayPawn() {
+        if (this != null)
+            return "Pawn{" +
+                    "position=" + position +
+                    '}';
+        return "Empty";
+    }
+
+
     public int getX() {
         return position.getX();
     }
