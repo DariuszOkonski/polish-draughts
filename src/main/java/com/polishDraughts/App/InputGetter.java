@@ -16,14 +16,28 @@ public class InputGetter {
         return cord;
     }
 
+    public static void processMove(Board board) {
+        boolean moveIsCorrect = false;
+        String[] inputData = null;
+
+        while (!moveIsCorrect){
+            inputData = getInputData();
+            moveIsCorrect = isInputValid(inputData);
+        }
+
+        int col = Util.colsDictionary.get(inputData[0]);
+        int row = Util.rowsDictionary.get(inputData[1]);
+
+        Coordinates coordinates = new Coordinates(col, row);
+
+    }
+
     public static boolean isInputValid(String[] inputData) {
         boolean colCorrect = Util.colsDictionary.get(inputData[0]) != null;
         boolean rowCorrect = Util.rowsDictionary.get(inputData[1]) != null;
 
         if(colCorrect && rowCorrect)
             return true;
-
         return false;
-
     }
 }

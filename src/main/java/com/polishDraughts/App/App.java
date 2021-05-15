@@ -5,13 +5,13 @@ public class App {
 
         Board board = new Board(12);
 
-        String[] data = InputGetter.getInputData();
-        System.out.println(InputGetter.isInputValid(data));
+//        String[] data = InputGetter.getInputData();
+//        System.out.println(InputGetter.isInputValid(data));
+
+        InputGetter.processMove(board);
 
 //        System.out.println(Arrays.deepToString(board.getFields()));
         board.print();
     }
-
-
 }
 

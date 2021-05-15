@@ -71,6 +71,9 @@ public class Board {
         this.fields[i][j] = new Pawn(coordinates, isWhite);
     }
 
+    public Pawn getField(Coordinates coordinates) {
+        return this.getFields()[coordinates.getX()][coordinates.getY()];
+    }
 
     public Pawn[][] getFields() {
         return fields;
