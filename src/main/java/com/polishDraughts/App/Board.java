@@ -1,15 +1,18 @@
 package com.polishDraughts.App;
 
 public class Board {
+    public final int BOARD_SIZE = 12;
+
+    public final static Board INSTANCE = new Board();
     private Pawn[][] fields;
     private int size;
 
 
-    public Board(int size) {
-        this.fields = new Pawn[size][size];
-        this.size = size;
+    private Board() {
+        this.fields = new Pawn[BOARD_SIZE][BOARD_SIZE];
+        this.size = BOARD_SIZE;
 
-        Util.setBoardDetails(size);
+        Util.setBoardDetails(BOARD_SIZE);
 
         this.setWhites();
         this.setBlack();

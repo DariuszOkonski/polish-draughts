@@ -16,7 +16,7 @@ public class InputGetter {
         return cord;
     }
 
-    public static void processMove(Board board) {
+    public static void processMove() {
         boolean moveIsCorrect = false;
         String[] inputData = null;
 
@@ -30,6 +30,7 @@ public class InputGetter {
 
         Coordinates coordinates = new Coordinates(col, row);
 
+        System.out.println(Board.INSTANCE.getField(coordinates));
     }
 
     public static boolean isInputValid(String[] inputData) {
