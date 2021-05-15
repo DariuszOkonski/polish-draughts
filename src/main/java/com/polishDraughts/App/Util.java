@@ -1,17 +1,23 @@
 package com.polishDraughts.App;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 public class Util {
     static int pawnCount;
     static int rowsCountPerPlayer;
     static int boardSize;
     static char[] letterIndexes;
-    static int MAX_BOARD_SIZE = 20;
+    static final int MAX_BOARD_SIZE = 20;
+    static final int MIN_BOARD_SIZE = 10;
 
-
+    static Dictionary<String, Integer> rowsDictionary = new Hashtable<String, Integer>();
+    static Dictionary<String, Integer> colsDictionary = new Hashtable<String, Integer>();
 
     static char[] getAlphabet() {
         return "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
     }
+
 
     static void setBoardDetails(int size) {
         boardSize = size;
@@ -19,6 +25,22 @@ public class Util {
         rowsCountPerPlayer = pawnCount / (boardSize/2);
         setLetterIndexesArray(boardSize);
         UI.setUiComponents(boardSize);
+
+        createCoordinatesDictionaries();
+    }
+
+
+    static void createCoordinatesDictionaries() {
+        System.out.println(letterIndexes);
+        for (int i = 0; i < letterIndexes.length; i++) {
+            String s = String.valueOf(letterIndexes[i]);
+            colsDictionary.put(s, i);
+        }
+        for (int i = 0; i < letterIndexes.length; i++) {
+            int rowPosition = i + 1;
+            String s = String.valueOf(rowPosition);
+            rowsDictionary.put(s, i);
+        }
     }
 
     static void setLetterIndexesArray (int size) {
