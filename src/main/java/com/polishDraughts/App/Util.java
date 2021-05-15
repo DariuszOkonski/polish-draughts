@@ -5,6 +5,7 @@ public class Util {
     static int rowsCountPerPlayer;
     static int boardSize;
     static char[] letterIndexes;
+    static int MAX_BOARD_SIZE = 20;
 
 
 
