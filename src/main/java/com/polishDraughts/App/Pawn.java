@@ -1,6 +1,7 @@
 package com.polishDraughts.App;
 
 public class Pawn {
+
     private Coordinates position;
     private boolean isCrowned;
     private boolean isWhite;
@@ -34,5 +35,12 @@ public class Pawn {
 
         return singlePawn;
     }
+    public int getX() {
+        return position.getX();
+    }
+    public int getY() {
+        return position.getY();
+    }
+
 }
 

@@ -16,5 +16,9 @@ public class Coordinates {
     public int getY() {
         return y;
     }
+
+    public String toString() {
+        return " ";
+    }
 }
 
