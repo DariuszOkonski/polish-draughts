@@ -30,7 +30,9 @@ public class InputGetter {
 
         Coordinates coordinates = new Coordinates(col, row);
 
+        System.out.println("======================");
         System.out.println(Board.INSTANCE.getField(coordinates));
+        System.out.println(Board.INSTANCE.getField(coordinates).getClass());
     }
 
     public static boolean isInputValid(String[] inputData) {
