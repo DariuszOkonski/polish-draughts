@@ -1,4 +1,7 @@
 package com.polishDraughts.App;
+import java.util.stream.IntStream;
+
+
 
 public class Pawn {
 
@@ -12,6 +15,22 @@ public class Pawn {
         this.isCrowned = false;
         this.isWhite = isWhite;
         this.setCharacter();
+    }
+
+    public void movePawn(Coordinates newPosition) {
+        Board.INSTANCE.clearField(position);
+        Game.INSTANCE.checkForHit(position, newPosition);
+        position = newPosition;
+        placePawnOnBoard();
+        if (Game.INSTANCE.isPlayerHasHit())
+            Game.INSTANCE.setPawnAfterHitting(this);
+        System.out.println(this.displayPawn() + "after hitting");
+    }
+
+
+
+    private void placePawnOnBoard() {
+        Board.INSTANCE.getFields()[position.getX()][position.getY()] = this;
     }
 
     private void setCharacter() {
@@ -64,5 +83,8 @@ public class Pawn {
         return position.getY();
     }
 
+    public Coordinates getPosition() {
+        return position;
+    }
 }
 

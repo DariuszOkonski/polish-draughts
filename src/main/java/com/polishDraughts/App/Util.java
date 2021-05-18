@@ -74,4 +74,20 @@ public class Util {
         }
         return letter;
     }
+
+    static void displayWrongPawnChoiceInfo(InputGetter input) {
+        if (!Game.INSTANCE.isCurrentPlayersPawnOnField(input.getPawnOnInitField())) {
+            System.out.println("You've chosen field with not your pawn");
+        } else if (input.getPossibleMoves().size() == 0) {
+            System.out.println("No possible moves for this field");
+        }
+    }
+    static void displayWrongMoveChoiceInfo() {
+            System.out.println("You've chosen field you cannot move to with this pawn");
+    }
+
+    static void displayTurnInfo() {
+        System.out.println(Game.INSTANCE.isWhiteTurn()?"White turn": "Black turn");
+
+    }
 }

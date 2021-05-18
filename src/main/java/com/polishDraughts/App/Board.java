@@ -1,7 +1,7 @@
 package com.polishDraughts.App;
 
 public class Board {
-    public final static Board INSTANCE = new Board();
+    public final static Board INSTANCE = new Board(true);
     private Pawn[][] fields;
 
     private int size;
@@ -17,6 +17,19 @@ public class Board {
         this.setBlack();
     }
 
+    public Board(boolean test) {
+        this.fields = new Pawn[10][10];
+        this.size = 10;
+        setSinglePawn(3, 3, true);
+        setSinglePawn(4, 4, false);
+
+//        setSinglePawn(5, 5, true);
+
+        setSinglePawn(4, 2, true);
+        setSinglePawn(2, 2, true);
+        setSinglePawn(6, 6, false);
+        setSinglePawn(1, 3, false);
+    }
     public int getSize() {
         return size;
     }
@@ -80,6 +93,12 @@ public class Board {
     public Pawn getField(Coordinates coordinates) {
         return this.getFields()[coordinates.getX()][coordinates.getY()];
     }
+
+    public void clearField(Coordinates coordinates) {
+        fields[coordinates.getX()][coordinates.getY()] = null;
+    }
+
+
 
     public Pawn[][] getFields() {
         return fields;
