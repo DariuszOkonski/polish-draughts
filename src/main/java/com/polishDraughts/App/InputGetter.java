@@ -21,11 +21,15 @@ public class InputGetter {
         String[] inputData = null;
         boolean fieldIsEmpty = false;
 
-        System.out.println(Game.whiteTurn?"white turn":"black turn");
+        System.out.println(Game.whiteTurn ? "white turn":"black turn");
         while (!moveIsCorrect || !fieldIsEmpty){
 
             inputData = getInputData();
             moveIsCorrect = isInputValid(inputData);
+
+            if(!moveIsCorrect) {
+                System.out.println("Wrong coordinates, try again.");
+            }
 
             System.out.println(moveIsCorrect + " move in range");
             if (moveIsCorrect) {
@@ -39,8 +43,11 @@ public class InputGetter {
                 fieldIsEmpty = field == null;
 
                 Coordinates[] possibleMoves = coordinates.getBasicMoves(Game.whiteTurn);
-                System.out.println(coordinates);
-                System.out.println(Arrays.toString(possibleMoves));
+
+                List<Coordinates> possibleMovesList = Game.INSTANCE.getPossibleMove(field, possibleMoves);
+
+//                System.out.println("POsible movelist ==============================");
+//                System.out.println(possibleMovesList);
             }
         }
 

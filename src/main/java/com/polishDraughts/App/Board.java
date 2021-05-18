@@ -3,6 +3,7 @@ package com.polishDraughts.App;
 public class Board {
     public final static Board INSTANCE = new Board();
     private Pawn[][] fields;
+
     private int size;
 
 
@@ -14,6 +15,10 @@ public class Board {
 
         this.setWhites();
         this.setBlack();
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public void print() {
