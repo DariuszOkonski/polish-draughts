@@ -20,9 +20,10 @@ public class InputGetter {
         boolean moveIsCorrect = false;
         String[] inputData = null;
         boolean fieldIsEmpty = false;
+        boolean fieldWithSameColor = false;
 
-        System.out.println(Game.whiteTurn ? "white turn":"black turn");
-        while (!moveIsCorrect || !fieldIsEmpty){
+        System.out.println(Game.INSTANCE.isWhiteTurn() ? "white turn":"black turn");
+        while (!moveIsCorrect || !fieldIsEmpty || fieldWithSameColor){
 
             inputData = getInputData();
             moveIsCorrect = isInputValid(inputData);
@@ -37,12 +38,21 @@ public class InputGetter {
                 int row = Util.rowsDictionary.get(inputData[1]);
 
                 Coordinates coordinates = new Coordinates(row, col);
-                System.out.println(coordinates.toString() + " field empty");
+
+//                System.out.println(coordinates.toString() + " field empty");
                 Pawn field = Board.INSTANCE.getField(coordinates);
+                fieldWithSameColor = Game.INSTANCE.checkIfFieldWithSameColor(field);
+
+                System.out.println("field =================================");
+                System.out.println(fieldWithSameColor);
+                System.out.println(field);
+//                System.out.println(field.getIsWhite());
+
+
                 System.out.println(field==null ? "empty" : field.displayPawn());
                 fieldIsEmpty = field == null;
 
-                Coordinates[] possibleMoves = coordinates.getBasicMoves(Game.whiteTurn);
+                Coordinates[] possibleMoves = coordinates.getBasicMoves(Game.INSTANCE.isWhiteTurn());
 
                 List<Coordinates> possibleMovesList = Game.INSTANCE.getPossibleMove(field, possibleMoves);
 
