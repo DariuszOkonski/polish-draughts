@@ -9,7 +9,7 @@ public class Board {
 
     private Board() {
         this.fields = new Pawn[Game.INSTANCE.BOARD_SIZE][Game.INSTANCE.BOARD_SIZE];
-        this.size = Game.INSTANCE.BOARD_SIZE;;
+        this.size = Game.INSTANCE.BOARD_SIZE;
 
 //        Util.setBoardDetails(BOARD_SIZE);
 
