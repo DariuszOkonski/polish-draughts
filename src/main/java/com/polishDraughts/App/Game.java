@@ -9,7 +9,7 @@ import java.util.List;
 public class Game {
     public final static Game INSTANCE = new Game();
 
-    private boolean whiteTurn = false;
+    private boolean whiteTurn = true;
     public final static int BOARD_SIZE = 10;
 
     private boolean playerHasHit = false;
@@ -197,6 +197,14 @@ public class Game {
             return field.getIsWhite() == whiteTurn;
         } catch (NullPointerException err) {
             return false;
+        }
+    }
+
+    public void checkIfPawnToCrowned(Pawn pawn) {
+        if(!pawn.getIsWhite() && pawn.getPosition().getX() == 0) {
+            pawn.setCrowned(true);
+        } else if(pawn.getIsWhite() && pawn.getPosition().getX() == Board.INSTANCE.getSize() - 1) {
+            pawn.setCrowned(true);
         }
     }
 

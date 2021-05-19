@@ -21,10 +21,16 @@ public class Pawn {
         Board.INSTANCE.clearField(position);
         Game.INSTANCE.checkForHit(position, newPosition);
         position = newPosition;
-        placePawnOnBoard();
-        if (Game.INSTANCE.isPlayerHasHit())
+
+        if (Game.INSTANCE.isPlayerHasHit()) {
+            placePawnOnBoard();
             Game.INSTANCE.setPawnAfterHitting(this);
-        System.out.println(this.displayPawn() + "after hitting");
+        } else {
+            Game.INSTANCE.checkIfPawnToCrowned(this);
+            placePawnOnBoard();
+        }
+
+//        System.out.println(this.displayPawn() + "after hitting");
     }
 
 

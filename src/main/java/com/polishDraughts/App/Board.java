@@ -29,6 +29,7 @@ public class Board {
         setSinglePawn(2, 2, true);
         setSinglePawn(6, 6, false);
         setSinglePawn(1, 3, false);
+        setSinglePawn(8, 8, true);
     }
     public int getSize() {
         return size;
