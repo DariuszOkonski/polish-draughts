@@ -20,16 +20,17 @@ public class Board {
     public Board(boolean test) {
         this.fields = new Pawn[10][10];
         this.size = 10;
-        setSinglePawn(3, 3, true);
-        setSinglePawn(4, 4, false);
+
+        setSinglePawn(5, 5, true);
+//        setSinglePawn(4, 4, false);
 
 //        setSinglePawn(5, 5, true);
 
-        setSinglePawn(4, 2, true);
-        setSinglePawn(2, 2, true);
-        setSinglePawn(6, 6, false);
-        setSinglePawn(1, 3, false);
-        setSinglePawn(8, 8, true);
+//        setSinglePawn(4, 2, true);
+//        setSinglePawn(2, 2, true);
+//        setSinglePawn(6, 6, false);
+//        setSinglePawn(1, 3, false);
+//        setSinglePawn(8, 8, true);
     }
     public int getSize() {
         return size;

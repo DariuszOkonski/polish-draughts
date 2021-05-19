@@ -1,5 +1,8 @@
 package com.polishDraughts.App;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Coordinates {
 
     private int x;
@@ -54,6 +57,109 @@ public class Coordinates {
         return possibleMoves;
     }
 
+    public List<Coordinates> getBasicMovesForCrowned() {
+        List<Coordinates> movesList = new ArrayList<>();
+
+        // top left corner
+        movesList.addAll(getTopLeftCoordinates(new Coordinates(this.x, this.y)));
+
+        // top right corner
+       movesList.addAll(getTopRightCoordinates(new Coordinates(this.x, this.y)));
+
+        // bottom left corner
+        movesList.addAll(getBottomLeftCoordinates(new Coordinates(this.x, this.y)));
+
+        // bottom left corner
+       movesList.addAll(getBottomRightCoordinates(new Coordinates(this.x, this.y)));
+
+
+       return  movesList;
+    }
+
+    private List<Coordinates> getTopLeftCoordinates(Coordinates currentCoordinates) {//top lef corner
+        List<Coordinates> movesList = new ArrayList<>();
+
+        boolean anyDirectionIterating = true;
+        do {
+            currentCoordinates.x--;
+            currentCoordinates.y--;
+            if (currentCoordinates.x >= 0 && currentCoordinates.y >= 0) {
+                movesList.add(new Coordinates(currentCoordinates.x, currentCoordinates.y));
+            } else {
+                anyDirectionIterating = false;
+            }
+        } while (anyDirectionIterating);
+        return movesList;
+    }
+
+    private List<Coordinates> getTopRightCoordinates(Coordinates currentCoordinates) {//top lef corner
+        List<Coordinates> movesList = new ArrayList<>();
+
+        boolean anyDirectionIterating = true;
+
+        do {
+            currentCoordinates.x--;
+            currentCoordinates.y++;
+            if(currentCoordinates.x >= 0 && currentCoordinates.y < Board.INSTANCE.getSize()) {
+                movesList.add(new Coordinates(currentCoordinates.x, currentCoordinates.y));
+            } else {
+                anyDirectionIterating = false;
+            }
+        } while (anyDirectionIterating);
+
+
+
+        return movesList;
+    }
+
+    private List<Coordinates> getBottomLeftCoordinates(Coordinates currentCoordinates) {//top lef corner
+        List<Coordinates> movesList = new ArrayList<>();
+
+        boolean anyDirectionIterating = true;
+
+        do {
+            currentCoordinates.x++;
+            currentCoordinates.y--;
+            if(currentCoordinates.x < Board.INSTANCE.getSize() && currentCoordinates.y >= 0) {
+                movesList.add(new Coordinates(currentCoordinates.x, currentCoordinates.y));
+            } else {
+                anyDirectionIterating = false;
+            }
+        } while (anyDirectionIterating);
+        return movesList;
+    }
+
+    private List<Coordinates> getBottomRightCoordinates(Coordinates currentCoordinates) {//top lef corner
+        List<Coordinates> movesList = new ArrayList<>();
+
+        boolean anyDirectionIterating = true;
+
+        do {
+            currentCoordinates.x++;
+            currentCoordinates.y++;
+            if(currentCoordinates.x < Board.INSTANCE.getSize() && currentCoordinates.y < Board.INSTANCE.getSize()) {
+                movesList.add(new Coordinates(currentCoordinates.x, currentCoordinates.y));
+            } else {
+                anyDirectionIterating = false;
+            }
+        } while (anyDirectionIterating);
+
+        return movesList;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Coordinates getDelta(Coordinates newPosition) {
         return new Coordinates(newPosition.getX() - x, newPosition.getY() - y);
     }
@@ -66,6 +172,8 @@ public class Coordinates {
         int hitY = attackedPawnPosition.getY() + deltaCoordinates.getY();
         return new Coordinates(hitX, hitY);
     }
+
+
 
     @Override
     public String toString() {

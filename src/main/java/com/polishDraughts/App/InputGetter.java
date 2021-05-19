@@ -94,15 +94,23 @@ public class InputGetter {
 
         do {
             pawnToMove = new InputGetter();
-            possibleCoordinates = pawnToMove.playerPawnCoords
-                    .getBasicMoves(Game.INSTANCE.isWhiteTurn());
 
-            pawnToMove.possibleShots = Game.INSTANCE.getCoordsForMultipleHits(pawnToMove.pawnOnInitField);
+            if(!pawnToMove.pawnOnInitField.isCrowned()){
+                possibleCoordinates = pawnToMove.playerPawnCoords
+                        .getBasicMoves(Game.INSTANCE.isWhiteTurn());
 
-            pawnToMove.possibleMoves = Game.INSTANCE
-                    .getPossibleMoves(pawnToMove.pawnOnInitField, possibleCoordinates);
+                pawnToMove.possibleShots = Game.INSTANCE.getCoordsForMultipleHits(pawnToMove.pawnOnInitField);
 
-            pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
+                pawnToMove.possibleMoves = Game.INSTANCE
+                        .getPossibleMoves(pawnToMove.pawnOnInitField, possibleCoordinates);
+
+                pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
+            } else {
+                pawnToMove.possibleMoves = Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
+
+                System.out.println("crowned moves ============================================");
+                System.out.println(pawnToMove.possibleMoves);
+            }
 
             Util.displayWrongPawnChoiceInfo(pawnToMove);
         } while (

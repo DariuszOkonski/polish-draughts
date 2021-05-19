@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 public class Pawn {
 
     private Coordinates position;
+
     private boolean isCrowned;
     private boolean isWhite;
     private String character;
@@ -15,6 +16,8 @@ public class Pawn {
         this.isCrowned = false;
         this.isWhite = isWhite;
         this.setCharacter();
+        //TODO - to remove
+        this.setCrowned(true);
     }
 
     public void movePawn(Coordinates newPosition) {
@@ -57,6 +60,10 @@ public class Pawn {
 
     public boolean multipleJump() {
         return false;
+    }
+
+    public boolean isCrowned() {
+        return isCrowned;
     }
 
     public void setCrowned(boolean crowned) {

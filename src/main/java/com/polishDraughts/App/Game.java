@@ -71,8 +71,14 @@ public class Game {
     }
 
 
+
+
     private void mainMenu(){
 
+    }
+
+    public List<Coordinates> getPossibleMovesForCrowned(Pawn pawn) {
+           return pawn.getPosition().getBasicMovesForCrowned();
     }
 
     public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves) {
