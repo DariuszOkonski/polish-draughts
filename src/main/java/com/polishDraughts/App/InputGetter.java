@@ -91,18 +91,18 @@ public class InputGetter {
     public static InputGetter getValidPawnToMove() {
         InputGetter pawnToMove;
         Coordinates[] possibleCoordinates;
+
         do {
             pawnToMove = new InputGetter();
             possibleCoordinates = pawnToMove.playerPawnCoords
-                    .getBasicMoves();
+                    .getBasicMoves(Game.INSTANCE.isWhiteTurn());
 
-            pawnToMove.possibleShots = Game.INSTANCE.getPossibleMoves(
-                    pawnToMove.pawnOnInitField,
-                    possibleCoordinates,
-                    true);
+            pawnToMove.possibleShots = Game.INSTANCE.getCoordsForMultipleHits(pawnToMove.pawnOnInitField);
 
             pawnToMove.possibleMoves = Game.INSTANCE
                     .getPossibleMoves(pawnToMove.pawnOnInitField, possibleCoordinates);
+
+            pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
 
             Util.displayWrongPawnChoiceInfo(pawnToMove);
         } while (

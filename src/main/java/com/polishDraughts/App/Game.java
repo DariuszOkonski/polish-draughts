@@ -79,7 +79,9 @@ public class Game {
         List<Coordinates> possibleCoordinatesToMove = new ArrayList<>();
 //        check if positions are in array range
         for (int i = 0; i < possibleMoves.length; i++) {
-            boolean isInArrayRange =possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize();
+            boolean isInArrayRange =
+                    (possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize()) &&
+                            (possibleMoves[i].getX() >=0 && possibleMoves[i].getX() < Board.INSTANCE.getSize());
 
             if(isInArrayRange) {
                 Pawn objectOnField = Board.INSTANCE.getField(possibleMoves[i]);
@@ -96,11 +98,14 @@ public class Game {
         }
         return possibleCoordinatesToMove;
     }
+
     public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves, boolean hitsOnly) {
         List<Coordinates> possibleCoordinatesToMove = new ArrayList<>();
 //        check if positions are in array range
         for (int i = 0; i < possibleMoves.length; i++) {
-            boolean isInArrayRange =possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize();
+            boolean isInArrayRange =
+                    (possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize()) &&
+                        (possibleMoves[i].getX() >=0 && possibleMoves[i].getX() < Board.INSTANCE.getSize());
 
             if(isInArrayRange) {
                 Pawn objectOnField = Board.INSTANCE.getField(possibleMoves[i]);
@@ -162,11 +167,11 @@ public class Game {
             }
         }
     }
-    private List<Coordinates> getCoordsForMultipleHits(Pawn positionAfterHit) {
+    public List<Coordinates> getCoordsForMultipleHits(Pawn positionAfterHit) {
 
         Coordinates[] unvalidatedCoords = positionAfterHit
                 .getPosition()
-                .getBasicMoves(Game.INSTANCE.isWhiteTurn());
+                .getBasicMoves();
         List<Coordinates> validCoords = getPossibleMoves(positionAfterHit, unvalidatedCoords, true);
         List<Coordinates> validMultipleShots = getPossibleShotsCoords(positionAfterHit, validCoords);
         return validMultipleShots;
