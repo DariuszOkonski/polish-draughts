@@ -40,6 +40,7 @@ public class Game {
             if (multipleShots.size() == 0) {
                 playerHasHit = false;
                 pawnAfterHitting = null;
+                crownedAttack = null;
                 Game.INSTANCE.changeTurn();
                 multipleShots = null;
             } else {
@@ -79,12 +80,11 @@ public class Game {
 
     }
 
-    public void getPossibleMovesForCrowned(Pawn pawn) {
+    public List<Coordinates> getPossibleMovesForCrowned(Pawn pawn) {
            var crownedMoves = pawn.getPosition().getBasicMovesForCrowned();
-           this.crownedAttack = new CrownedAttack(crownedMoves, pawn.getPosition());
-
-           System.out.println(Collections.unmodifiableList(crownedMoves));
-            System.out.println(this.crownedAttack);
+           this.crownedAttack = new CrownedAttack(crownedMoves, pawn);
+           System.out.println(this.crownedAttack.getPossibleMoves());
+           return crownedAttack.getPossibleMoves();
     }
 
     public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves) {
@@ -150,7 +150,7 @@ public class Game {
     }
     public void checkForHit(Coordinates startPosition, Coordinates newPosition) {
         Coordinates coordsDelta = startPosition.getDelta(newPosition);
-        System.out.println(coordsDelta);
+//        System.out.println(coordsDelta);
 
         boolean moveDistanceLongerThanOneField =
                 Math.abs(coordsDelta.getX()) > 1
@@ -165,8 +165,8 @@ public class Game {
         Coordinates checkedCoords = startPosition;
         System.out.println(checkedCoords);
         for (int i=1; i<Math.abs(coordsDelta.getX()); i++) {
-            int deltaX = coordsDelta.getX() > 0 ? i : -i;
-            int deltaY = coordsDelta.getY() > 0 ? i : -i;
+            int deltaX = coordsDelta.getX() > 0 ? 1 : -1;
+            int deltaY = coordsDelta.getY() > 0 ? 1 : -1;
             checkedCoords.incrementX(deltaX);
             checkedCoords.incrementY(deltaY);
             Pawn fieldsObj = Board.INSTANCE.getField(checkedCoords);

@@ -106,10 +106,8 @@ public class InputGetter {
 
                 pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
             } else {
-//                pawnToMove.possibleMoves = Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
-                Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
                 System.out.println("crowned moves ============================================");
-//                System.out.println(pawnToMove.possibleMoves);
+                pawnToMove.possibleMoves = Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
             }
 
             Util.displayWrongPawnChoiceInfo(pawnToMove);

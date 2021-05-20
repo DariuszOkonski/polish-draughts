@@ -90,4 +90,5 @@ public class Util {
         System.out.println(Game.INSTANCE.isWhiteTurn()?"White turn": "Black turn");
 
     }
+
 }

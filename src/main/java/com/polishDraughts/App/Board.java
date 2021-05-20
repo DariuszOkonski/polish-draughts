@@ -20,16 +20,7 @@ public class Board {
     public Board(boolean test) {
         this.fields = new Pawn[10][10];
         this.size = 10;
-
-        setSinglePawn(5, 5, true);
-
-        setSinglePawn(2, 2, false);
-        setSinglePawn(3, 3, false);
-
-        setSinglePawn(3, 7, false);
-
-        setSinglePawn(8, 2, false);
-        setSinglePawn(6, 4, false);
+        testAllies();
 
 //        setSinglePawn(4, 2, true);
 //        setSinglePawn(2, 2, true);
@@ -37,6 +28,30 @@ public class Board {
 //        setSinglePawn(1, 3, false);
 //        setSinglePawn(8, 8, true);
     }
+    void testTwoInRows(){
+        setSinglePawn(5, 5, false);
+
+        setSinglePawn(1, 1, false);
+        setSinglePawn(2, 2, false);
+
+        setSinglePawn(3, 7, false);
+        setSinglePawn(7, 7, true);
+        setSinglePawn(4, 4, false);
+        setSinglePawn(8, 8, false);
+
+        setSinglePawn(9, 9, true);
+        setSinglePawn(6, 4, false);}
+    void testAllies(){
+        setSinglePawn(5, 5, true);
+        setSinglePawn(4, 6, true);
+        setSinglePawn(2, 8, false);
+//        setSinglePawn(4, 6, true);
+        setSinglePawn(3, 3, false);
+        setSinglePawn(6, 4, false);
+        setSinglePawn(7, 3, false);
+//        setSinglePawn(5, 5, false);
+
+        }
     public int getSize() {
         return size;
     }
@@ -98,7 +113,18 @@ public class Board {
     }
 
     public Pawn getField(Coordinates coordinates) {
-        return this.getFields()[coordinates.getX()][coordinates.getY()];
+            return this.getFields()[coordinates.getX()][coordinates.getY()];
+    }
+
+    public boolean isFieldEmpty(Coordinates coordinates) {
+        boolean fieldEmpty = false;
+        try {
+            fieldEmpty = this.getFields()[coordinates.getX()][coordinates.getY()] == null;
+        } catch (IndexOutOfBoundsException err) {
+            fieldEmpty = false;
+        } finally {
+            return fieldEmpty;
+        }
     }
 
     public void clearField(Coordinates coordinates) {
