@@ -57,20 +57,23 @@ public class Coordinates {
         return possibleMoves;
     }
 
-    public List<Coordinates> getBasicMovesForCrowned() {
-        List<Coordinates> movesList = new ArrayList<>();
+    public List<List<Coordinates>> getBasicMovesForCrowned() {
+//        List<Coordinates> movesList = new ArrayList<>();
+//        List<Coordinates[]> movesList = new ArrayList<Coordinates[]>();
+        List<List<Coordinates>> movesList = new ArrayList<>();
 
         // top left corner
-        movesList.addAll(getTopLeftCoordinates(new Coordinates(this.x, this.y)));
+        movesList.add(getTopLeftCoordinates(new Coordinates(this.x, this.y)));
 
         // top right corner
-       movesList.addAll(getTopRightCoordinates(new Coordinates(this.x, this.y)));
+       movesList.add(getTopRightCoordinates(new Coordinates(this.x, this.y)));
 
-        // bottom left corner
-        movesList.addAll(getBottomLeftCoordinates(new Coordinates(this.x, this.y)));
+        // bottom right corner
+       movesList.add(getBottomRightCoordinates(new Coordinates(this.x, this.y)));
 
-        // bottom left corner
-       movesList.addAll(getBottomRightCoordinates(new Coordinates(this.x, this.y)));
+       // bottom left corner
+        movesList.add(getBottomLeftCoordinates(new Coordinates(this.x, this.y)));
+
 
 
        return  movesList;
@@ -175,12 +178,20 @@ public class Coordinates {
 
 
 
+//    @Override
+//    public String toString() {
+//        return "Coordinates{" +
+//                "x=" + x +
+//                ", y=" + y +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return "Coordinates{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "{ " +
+                "" + Util.getAlphabet()[y] +
+                "" +  (x + 1)+
+                " }";
     }
 }
 

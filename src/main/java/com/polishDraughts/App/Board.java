@@ -22,9 +22,14 @@ public class Board {
         this.size = 10;
 
         setSinglePawn(5, 5, true);
-//        setSinglePawn(4, 4, false);
 
-//        setSinglePawn(5, 5, true);
+        setSinglePawn(2, 2, false);
+        setSinglePawn(3, 3, false);
+
+        setSinglePawn(3, 7, false);
+
+        setSinglePawn(8, 2, false);
+        setSinglePawn(6, 4, false);
 
 //        setSinglePawn(4, 2, true);
 //        setSinglePawn(2, 2, true);
@@ -106,5 +111,4 @@ public class Board {
         return fields;
     }
 }
-
 

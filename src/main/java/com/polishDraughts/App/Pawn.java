@@ -16,8 +16,10 @@ public class Pawn {
         this.isCrowned = false;
         this.isWhite = isWhite;
         this.setCharacter();
+
         //TODO - to remove
-        this.setCrowned(true);
+        if(isWhite)
+            this.setCrowned(true);
     }
 
     public void movePawn(Coordinates newPosition) {

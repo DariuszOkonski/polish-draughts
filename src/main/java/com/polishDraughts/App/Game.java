@@ -4,6 +4,7 @@ package com.polishDraughts.App;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -14,6 +15,7 @@ public class Game {
 
     private boolean playerHasHit = false;
     private Pawn pawnAfterHitting;
+    private CrownedAttack crownedAttack = null;
 
     private Game() {
         Util.setBoardDetails(BOARD_SIZE);
@@ -77,8 +79,12 @@ public class Game {
 
     }
 
-    public List<Coordinates> getPossibleMovesForCrowned(Pawn pawn) {
-           return pawn.getPosition().getBasicMovesForCrowned();
+    public void getPossibleMovesForCrowned(Pawn pawn) {
+           var crownedMoves = pawn.getPosition().getBasicMovesForCrowned();
+           this.crownedAttack = new CrownedAttack(crownedMoves, pawn.getPosition());
+
+           System.out.println(Collections.unmodifiableList(crownedMoves));
+            System.out.println(this.crownedAttack);
     }
 
     public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves) {
