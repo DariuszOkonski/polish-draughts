@@ -86,8 +86,11 @@ public class Util {
             System.out.println("You've chosen field you cannot move to with this pawn");
     }
 
-    static void displayTurnInfo() {
-        System.out.println(Game.INSTANCE.isWhiteTurn()?"White turn": "Black turn");
+    static void displayTurnInfo(String type) {
+        String turnStr = Game.INSTANCE.isWhiteTurn()?"White turn": "Black turn";
+        String typeStr = String.format("|| coordinates for %s: ", type.toUpperCase());
+        System.out.println(turnStr +"   " +typeStr);
+
 
     }
 }

@@ -2,7 +2,6 @@
 //
 package com.polishDraughts.App;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class Game {
     void init() {
         List<Coordinates> multipleShots = null;
         while(true) {
-
+//            Board.INSTANCE.print();
             if (multipleShots == null)
                 InputGetter.processMove();
 
@@ -31,21 +30,16 @@ public class Game {
                 Game.INSTANCE.changeTurn();
                 continue;
             }
-            multipleShots = getCoordsForMultipleHits(getPawnAfterHitting());
-            System.out.println();
-            System.out.println(playerHasHit + " " + " pawn hittin " + pawnAfterHitting + multipleShots);
-            System.out.println();
+            multipleShots = getPossibleShots(getPawnAfterHitting());
             if (multipleShots.size() == 0) {
                 playerHasHit = false;
                 pawnAfterHitting = null;
                 Game.INSTANCE.changeTurn();
                 multipleShots = null;
             } else {
-                System.out.println(multipleShots + " MULTIPLE SHOTS");
                 InputGetter inputGetter = new InputGetter(pawnAfterHitting, multipleShots);
                 InputGetter.processMove(inputGetter);
             }
-            System.out.println(multipleShots + " MULTI SHOTS <---------------------" + playerHasHit);
         }
     }
 
@@ -75,7 +69,7 @@ public class Game {
 
     }
 
-    public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves) {
+    public List<Coordinates> getPossibleMoves(Coordinates[] possibleMoves) {
         List<Coordinates> possibleCoordinatesToMove = new ArrayList<>();
 //        check if positions are in array range
         for (int i = 0; i < possibleMoves.length; i++) {
@@ -84,56 +78,31 @@ public class Game {
             if(isInArrayRange) {
                 Pawn objectOnField = Board.INSTANCE.getField(possibleMoves[i]);
                 boolean fieldIsEmpty = objectOnField == null;
-
-                if(fieldIsEmpty) {
+                if(fieldIsEmpty)
                     possibleCoordinatesToMove.add(possibleMoves[i]);
-                    continue;
-                }
-                boolean opponentPawnOnField = objectOnField.getIsWhite() != isWhiteTurn();
-                if (opponentPawnOnField)
-                    addHitMoveIfPossible(possibleCoordinatesToMove, startPawnField, objectOnField);
             }
         }
         return possibleCoordinatesToMove;
     }
-    public List<Coordinates> getPossibleMoves(Pawn startPawnField, Coordinates[] possibleMoves, boolean hitsOnly) {
+    public List<Coordinates> getPossibleMoves(Coordinates[] possibleMoves, boolean hitsOnly) {
         List<Coordinates> possibleCoordinatesToMove = new ArrayList<>();
 //        check if positions are in array range
         for (int i = 0; i < possibleMoves.length; i++) {
-            boolean isInArrayRange =possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize();
+            boolean isInArrayRange = possibleMoves[i].getY() >= 0 && possibleMoves[i].getY() < Board.INSTANCE.getSize();
 
             if(isInArrayRange) {
                 Pawn objectOnField = Board.INSTANCE.getField(possibleMoves[i]);
                 boolean fieldIsEmpty = objectOnField == null;
-
-                if(!fieldIsEmpty) {
-
-                    boolean opponentPawnOnField = objectOnField.getIsWhite() != isWhiteTurn();
-                    if (opponentPawnOnField)
-                        possibleCoordinatesToMove.add(objectOnField.getPosition());
-                }
+                if(!fieldIsEmpty && !isCurrentPlayersPawnOnField(objectOnField))
+                    possibleCoordinatesToMove.add(objectOnField.getPosition());
             }
         }
         return possibleCoordinatesToMove;
     }
 
-    private void addHitMoveIfPossible (List<Coordinates> possibleMoves,
-                                       Pawn attackingPawn,
-                                       Pawn attackedPawn) {
-        Coordinates hittingFieldCoordinates = Coordinates
-                .getHittingMove(
-                        attackingPawn.getPosition(),
-                        attackedPawn.getPosition());
-
-        Pawn objectAfterHitPawn = Board.INSTANCE.getField(hittingFieldCoordinates);
-        System.out.println(hittingFieldCoordinates);
-        System.out.println(objectAfterHitPawn);
-        if (objectAfterHitPawn==null)
-            possibleMoves.add(hittingFieldCoordinates);
-    }
     public void checkForHit(Coordinates startPosition, Coordinates newPosition) {
         Coordinates coordsDelta = startPosition.getDelta(newPosition);
-        System.out.println(coordsDelta);
+
 
         boolean moveDistanceLongerThanOneField =
                 Math.abs(coordsDelta.getX()) > 1
@@ -144,47 +113,60 @@ public class Game {
         }
     }
     private void checkPassedFieldsForHit(Coordinates startPosition, Coordinates coordsDelta) {
-        System.out.println("condition absolute");
+
         Coordinates checkedCoords = startPosition;
-        System.out.println(checkedCoords);
+
         for (int i=1; i<Math.abs(coordsDelta.getX()); i++) {
-            int deltaX = coordsDelta.getX() > 0 ? i : -i;
-            int deltaY = coordsDelta.getY() > 0 ? i : -i;
+            int deltaX = coordsDelta.getX() > 0 ? 1 : -1;
+            int deltaY = coordsDelta.getY() > 0 ? 1 : -1;
             checkedCoords.incrementX(deltaX);
             checkedCoords.incrementY(deltaY);
             Pawn fieldsObj = Board.INSTANCE.getField(checkedCoords);
-            System.out.println(checkedCoords);
 
             if (fieldsObj != null) {
-                System.out.println("hitting" + fieldsObj.displayPawn());
                 Board.INSTANCE.clearField(checkedCoords);
                 playerHasHit = true;
             }
         }
     }
-    private List<Coordinates> getCoordsForMultipleHits(Pawn positionAfterHit) {
+     List<Coordinates> getPossibleShots(Pawn positionAfterHit) {
 
         Coordinates[] unvalidatedCoords = positionAfterHit
                 .getPosition()
-                .getBasicMoves(Game.INSTANCE.isWhiteTurn());
-        List<Coordinates> validCoords = getPossibleMoves(positionAfterHit, unvalidatedCoords, true);
+                .getBasicMoves();
+        List<Coordinates> validCoords = getPossibleMoves(unvalidatedCoords, true);
         List<Coordinates> validMultipleShots = getPossibleShotsCoords(positionAfterHit, validCoords);
         return validMultipleShots;
     }
 
     private List<Coordinates> getPossibleShotsCoords(Pawn positionAfterHit, List<Coordinates> validCoords) {
         List<Coordinates> shotsCoords = new ArrayList<>();
-        System.out.println(positionAfterHit.displayPawn() + " position after hit");
+
         for (Coordinates move : validCoords) {
             Pawn pawnOnField = Board.INSTANCE.getField(move);
-            System.out.println(move + " move " + pawnOnField +" field " + " ");
+
             if (pawnOnField == null)
                 continue;
 
             if (!isCurrentPlayersPawnOnField(pawnOnField))
-                addHitMoveIfPossible(shotsCoords, positionAfterHit, pawnOnField);
+                addHitCoordsIfValid(shotsCoords, positionAfterHit, pawnOnField);
+                addHitCoordsIfValid(shotsCoords, positionAfterHit, pawnOnField);
         }
         return shotsCoords;
+    }
+
+    private void addHitCoordsIfValid(List<Coordinates> possibleMoves,
+                                     Pawn attackingPawn,
+                                     Pawn attackedPawn) {
+
+        Coordinates hittingFieldCoordinates =
+                Coordinates.getHittingCoords(
+                        attackingPawn.getPosition(),
+                        attackedPawn.getPosition());
+
+        Pawn objectAfterHitPawn = Board.INSTANCE.getField(hittingFieldCoordinates);
+        if (objectAfterHitPawn==null)
+            possibleMoves.add(hittingFieldCoordinates);
     }
 
     public boolean isCurrentPlayersPawnOnField(Pawn field) {

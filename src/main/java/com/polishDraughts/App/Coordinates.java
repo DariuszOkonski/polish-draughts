@@ -58,7 +58,7 @@ public class Coordinates {
         return new Coordinates(newPosition.getX() - x, newPosition.getY() - y);
     }
 
-    public static Coordinates getHittingMove(Coordinates attackingPawnPosition, Coordinates attackedPawnPosition) {
+    public static Coordinates getHittingCoords(Coordinates attackingPawnPosition, Coordinates attackedPawnPosition) {
 //        int directionX =  attackedPawnPosition.getX() - attackingPawnPosition.getX();
 //        int directionY =  attackedPawnPosition.getY() - attackingPawnPosition.getY();
         Coordinates deltaCoordinates = attackingPawnPosition.getDelta(attackedPawnPosition);

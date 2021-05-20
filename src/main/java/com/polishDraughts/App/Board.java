@@ -35,6 +35,8 @@ public class Board {
     }
 
     public void print() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
         Util.printLettersLine();
         for (int i = 0; i < size; i++) {
