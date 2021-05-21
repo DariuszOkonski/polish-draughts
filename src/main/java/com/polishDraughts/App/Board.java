@@ -13,8 +13,8 @@ public class Board {
 
 //        Util.setBoardDetails(BOARD_SIZE);
 
-        this.setWhites();
-        this.setBlack();
+//        this.setWhites();
+//        this.setBlack();
     }
 
     public Board(boolean test) {
@@ -42,13 +42,15 @@ public class Board {
         setSinglePawn(9, 9, true);
         setSinglePawn(6, 4, false);}
     void testAllies(){
-        setSinglePawn(5, 5, true);
-        setSinglePawn(4, 6, true);
-        setSinglePawn(2, 8, false);
-//        setSinglePawn(4, 6, true);
+        setSinglePawn(1, 1, true);
+        setSinglePawn(1, 1, false);
         setSinglePawn(3, 3, false);
+        setSinglePawn(5, 5, false);
+        setSinglePawn(5, 2, false);
         setSinglePawn(6, 4, false);
-        setSinglePawn(7, 3, false);
+        setSinglePawn(4, 6, true, true);
+        setSinglePawn(2, 8, false, true);
+//        setSinglePawn(4, 6, true);
 //        setSinglePawn(5, 5, false);
 
         }
@@ -110,6 +112,11 @@ public class Board {
     private void setSinglePawn(int i, int j, boolean isWhite) {
         Coordinates coordinates = new Coordinates(i, j);
         this.fields[i][j] = new Pawn(coordinates, isWhite);
+    }
+    private void setSinglePawn(int i, int j, boolean isWhite, boolean  test) {
+        Coordinates coordinates = new Coordinates(i, j);
+        this.fields[i][j] = new Pawn(coordinates, isWhite);
+        this.fields[i][j].setCrowned(true);
     }
 
     public Pawn getField(Coordinates coordinates) {

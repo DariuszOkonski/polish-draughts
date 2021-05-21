@@ -186,6 +186,8 @@ public class Coordinates {
         Coordinates deltaCoordinates = attackingPawnPosition.getDelta(attackedPawnPosition);
         int hitX = attackedPawnPosition.getX() + deltaCoordinates.getX();
         int hitY = attackedPawnPosition.getY() + deltaCoordinates.getY();
+        if (hitX < 0 || hitY < 0 || hitX >= Board.INSTANCE.getSize() || hitY >= Board.INSTANCE.getSize())
+            return null;
         return new Coordinates(hitX, hitY);
     }
 

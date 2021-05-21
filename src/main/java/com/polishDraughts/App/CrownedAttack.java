@@ -3,7 +3,6 @@
 // -
 package com.polishDraughts.App;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class CrownedAttack {
@@ -39,9 +38,34 @@ public class CrownedAttack {
         List<Coordinates> unavailableFields = new ArrayList<Coordinates>();
         unavailableFields.addAll(getFieldsToRemoveAfterAllies());
         unavailableFields.addAll(getFieldsToRemoveAfterTwoPawnsInRow());
-        Set<Coordinates> targetSet = new HashSet<>(coordsStates.get("empty"));
+        Set<Coordinates> targetSet = new HashSet<>();
+        if (Game.INSTANCE.isPlayerHasHit()) {
+            List<Coordinates> captureFields = getCaptureFields();
+            targetSet.addAll(captureFields);
+        }else{
+            targetSet = new HashSet<>(coordsStates.get("empty"));
+        }
         targetSet.removeAll(unavailableFields);
         possibleMoves.addAll(targetSet);
+    }
+
+    private List<Coordinates> getCaptureFields() {
+        List<Coordinates> availableFields = new ArrayList<Coordinates>();
+        for (Coordinates enemyCoord : coordsStates.get("enemy")){
+            if (leftTop.contains(enemyCoord)){
+                availableFields.addAll(getEmptyFieldsList(enemyCoord.getTopLeftCoordinates()));
+            }
+            else if (rightTop.contains(enemyCoord)){
+                availableFields.addAll(getEmptyFieldsList(enemyCoord.getTopRightCoordinates()));
+            }
+            else if (rightBottom.contains(enemyCoord)){
+                availableFields.addAll(getEmptyFieldsList(enemyCoord.getBottomRightCoordinates()));
+            }
+            else if (leftBottom.contains(enemyCoord)){
+                availableFields.addAll(getEmptyFieldsList(enemyCoord.getBottomLeftCoordinates()));
+            }
+        }
+        return availableFields;
     }
 
     public List<Coordinates> getPossibleMoves() {
@@ -62,19 +86,19 @@ public class CrownedAttack {
             }else if (leftBottom.contains(allyField)){
                 checkedCoordinates = allyField.getBottomLeftCoordinates();
             }
-            List<Coordinates> emptyFieldsAfterAllyPawn = getEmptyCoordsAfterAllyPawn(checkedCoordinates);
+            List<Coordinates> emptyFieldsAfterAllyPawn = getEmptyFieldsList(checkedCoordinates);
             emptyFieldsToRemove.addAll(emptyFieldsAfterAllyPawn);
         }
         return emptyFieldsToRemove;
     }
 
-    private List<Coordinates> getEmptyCoordsAfterAllyPawn(List<Coordinates> coordsToRemove) {
-        List<Coordinates> emptyFieldsToRemove = new ArrayList<Coordinates>();
-        for (Coordinates toRemove : coordsToRemove) {
+    private List<Coordinates> getEmptyFieldsList(List<Coordinates> coordsList) {
+        List<Coordinates> emptyFieldsCoords = new ArrayList<Coordinates>();
+        for (Coordinates toRemove : coordsList) {
             if (Board.INSTANCE.getField(toRemove) == null)
-                emptyFieldsToRemove.add(toRemove);
+                emptyFieldsCoords.add(toRemove);
         }
-        return emptyFieldsToRemove;
+        return emptyFieldsCoords;
     }
 
 
@@ -112,7 +136,7 @@ public class CrownedAttack {
             if (!Board.INSTANCE.isFieldEmpty(fieldAfterCoord))
                 fieldsAfterTwoInRows.addAll(fieldAfterCoord.getBottomLeftCoordinates());
         }
-        listToRemove.addAll(getEmptyCoordsAfterAllyPawn(fieldsAfterTwoInRows));
+        listToRemove.addAll(getEmptyFieldsList(fieldsAfterTwoInRows));
     }
 
     private void setEmptyLists () {

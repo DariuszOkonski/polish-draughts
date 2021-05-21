@@ -83,7 +83,6 @@ public class Game {
     public List<Coordinates> getPossibleMovesForCrowned(Pawn pawn) {
            var crownedMoves = pawn.getPosition().getBasicMovesForCrowned();
            this.crownedAttack = new CrownedAttack(crownedMoves, pawn);
-           System.out.println(this.crownedAttack.getPossibleMoves());
            return crownedAttack.getPossibleMoves();
     }
 
@@ -137,15 +136,14 @@ public class Game {
     private void addHitMoveIfPossible (List<Coordinates> possibleMoves,
                                        Pawn attackingPawn,
                                        Pawn attackedPawn) {
-        Coordinates hittingFieldCoordinates = Coordinates
-                .getHittingMove(
-                        attackingPawn.getPosition(),
-                        attackedPawn.getPosition());
 
-        Pawn objectAfterHitPawn = Board.INSTANCE.getField(hittingFieldCoordinates);
+        boolean objectAfterHitPawnEmpty = false;
+        Coordinates hittingFieldCoordinates = Coordinates
+                .getHittingMove(attackingPawn.getPosition(), attackedPawn.getPosition());
+        if (hittingFieldCoordinates != null)
+            objectAfterHitPawnEmpty = Board.INSTANCE.getField(hittingFieldCoordinates) == null;
         System.out.println(hittingFieldCoordinates);
-        System.out.println(objectAfterHitPawn);
-        if (objectAfterHitPawn==null)
+        if (objectAfterHitPawnEmpty)
             possibleMoves.add(hittingFieldCoordinates);
     }
     public void checkForHit(Coordinates startPosition, Coordinates newPosition) {
@@ -180,12 +178,16 @@ public class Game {
         }
     }
     public List<Coordinates> getCoordsForMultipleHits(Pawn positionAfterHit) {
-
-        Coordinates[] unvalidatedCoords = positionAfterHit
-                .getPosition()
-                .getBasicMoves();
-        List<Coordinates> validCoords = getPossibleMoves(positionAfterHit, unvalidatedCoords, true);
-        List<Coordinates> validMultipleShots = getPossibleShotsCoords(positionAfterHit, validCoords);
+        List<Coordinates> validMultipleShots;
+        if (crownedAttack == null) {
+            Coordinates[] unvalidatedCoords = positionAfterHit
+                    .getPosition()
+                    .getBasicMoves();
+            List<Coordinates> validCoords = getPossibleMoves(positionAfterHit, unvalidatedCoords, true);
+            validMultipleShots = getPossibleShotsCoords(positionAfterHit, validCoords);
+        } else {
+            validMultipleShots = getPossibleMovesForCrowned(positionAfterHit);
+        }
         return validMultipleShots;
     }
 
@@ -221,6 +223,7 @@ public class Game {
     }
 
     private void changeTurn() {
+        crownedAttack = null;
         whiteTurn = !whiteTurn;
     }
         //    public static int BOARD_SIZE = 12;

@@ -37,6 +37,9 @@ public class InputGetter {
 
     private void setFieldToMoveIn() {
         Board.INSTANCE.print();
+        System.out.println("Choosen pawn:       "+pawnOnInitField.displayPawn());
+        System.out.println("Possible moves:     "+possibleMoves);
+        System.out.println("Multi hitting:     "+Game.INSTANCE.isPlayerHasHit());
         this.fieldToMoveInputData = this.getPlayerPawnInputData("move");
         this.fieldsToMoveCoords = new Coordinates(this.fieldToMoveInputData[0], this.fieldToMoveInputData[1]);
         this.pawnOnFieldToMove = Board.INSTANCE.getField(fieldsToMoveCoords);
@@ -94,29 +97,27 @@ public class InputGetter {
 
         do {
             pawnToMove = new InputGetter();
+            if (pawnToMove.pawnOnInitField != null) {
+                if (!pawnToMove.pawnOnInitField.isCrowned()) {
+                    possibleCoordinates = pawnToMove.playerPawnCoords
+                            .getBasicMoves(Game.INSTANCE.isWhiteTurn());
 
-            if(!pawnToMove.pawnOnInitField.isCrowned()){
-                possibleCoordinates = pawnToMove.playerPawnCoords
-                        .getBasicMoves(Game.INSTANCE.isWhiteTurn());
+                    pawnToMove.possibleShots = Game.INSTANCE.getCoordsForMultipleHits(pawnToMove.pawnOnInitField);
 
-                pawnToMove.possibleShots = Game.INSTANCE.getCoordsForMultipleHits(pawnToMove.pawnOnInitField);
+                    pawnToMove.possibleMoves = Game.INSTANCE
+                            .getPossibleMoves(pawnToMove.pawnOnInitField, possibleCoordinates);
 
-                pawnToMove.possibleMoves = Game.INSTANCE
-                        .getPossibleMoves(pawnToMove.pawnOnInitField, possibleCoordinates);
+                    pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
+                } else {
+                    pawnToMove.possibleMoves = Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
+                }
 
-                pawnToMove.possibleMoves.addAll(pawnToMove.possibleShots);
-            } else {
-                System.out.println("crowned moves ============================================");
-                pawnToMove.possibleMoves = Game.INSTANCE.getPossibleMovesForCrowned(pawnToMove.pawnOnInitField);
             }
-
             Util.displayWrongPawnChoiceInfo(pawnToMove);
         } while (
                 !pawnToMove.isPlayersPawn() || pawnToMove.possibleMoves.size() == 0);
 
         System.out.println("Correct");
-        System.out.println("Choosen pawn:       "+pawnToMove.pawnOnInitField.displayPawn());
-        System.out.println("Possible moves:     "+pawnToMove.possibleMoves);
         return pawnToMove;
     }
 
