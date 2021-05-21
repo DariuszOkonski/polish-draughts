@@ -34,109 +34,103 @@ public class CrownedAttack {
 
     }
 
+    public List<Coordinates> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+
     private void setPossibleMoves() {
         List<Coordinates> unavailableFields = new ArrayList<Coordinates>();
         unavailableFields.addAll(getFieldsToRemoveAfterAllies());
         unavailableFields.addAll(getFieldsToRemoveAfterTwoPawnsInRow());
+
         Set<Coordinates> targetSet = new HashSet<>();
-        if (Game.INSTANCE.isPlayerHasHit()) {
-            List<Coordinates> captureFields = getCaptureFields();
-            targetSet.addAll(captureFields);
-        }else{
+        if (Game.INSTANCE.isPlayerHasHit())
+            targetSet = new HashSet<>(getCaptureFields());
+        else
             targetSet = new HashSet<>(coordsStates.get("empty"));
-        }
+
         targetSet.removeAll(unavailableFields);
         possibleMoves.addAll(targetSet);
     }
 
     private List<Coordinates> getCaptureFields() {
-        List<Coordinates> availableFields = new ArrayList<Coordinates>();
-        for (Coordinates enemyCoord : coordsStates.get("enemy")){
-            if (leftTop.contains(enemyCoord)){
-                availableFields.addAll(getEmptyFieldsList(enemyCoord.getTopLeftCoordinates()));
-            }
-            else if (rightTop.contains(enemyCoord)){
-                availableFields.addAll(getEmptyFieldsList(enemyCoord.getTopRightCoordinates()));
-            }
-            else if (rightBottom.contains(enemyCoord)){
-                availableFields.addAll(getEmptyFieldsList(enemyCoord.getBottomRightCoordinates()));
-            }
-            else if (leftBottom.contains(enemyCoord)){
-                availableFields.addAll(getEmptyFieldsList(enemyCoord.getBottomLeftCoordinates()));
-            }
-        }
-        return availableFields;
-    }
+        List<Coordinates> afterEnemyEmptyFieldsCoordinates
+                = getEmptyFieldsAfterPawns(coordsStates.get("enemy"));
 
-    public List<Coordinates> getPossibleMoves() {
-        return possibleMoves;
+        return afterEnemyEmptyFieldsCoordinates;
     }
-
     private List<Coordinates> getFieldsToRemoveAfterAllies() {
-        List<Coordinates> checkedCoordinates = new ArrayList<Coordinates>();
-        List<Coordinates> emptyFieldsToRemove = new ArrayList<Coordinates>();
+        List <Coordinates> afterAlliesEmptyFieldsCoordinates
+                = getEmptyFieldsAfterPawns(coordsStates.get("ally"));
 
-        for (Coordinates allyField : coordsStates.get("ally")) {
-            if (leftTop.contains(allyField)){
-                checkedCoordinates = allyField.getTopLeftCoordinates();
-            }else if (rightTop.contains(allyField)){
-                checkedCoordinates = allyField.getTopRightCoordinates();
-            }else if (rightBottom.contains(allyField)){
-                checkedCoordinates = allyField.getBottomRightCoordinates();
-            }else if (leftBottom.contains(allyField)){
-                checkedCoordinates = allyField.getBottomLeftCoordinates();
-            }
-            List<Coordinates> emptyFieldsAfterAllyPawn = getEmptyFieldsList(checkedCoordinates);
-            emptyFieldsToRemove.addAll(emptyFieldsAfterAllyPawn);
-        }
-        return emptyFieldsToRemove;
+        return afterAlliesEmptyFieldsCoordinates;
     }
-
-    private List<Coordinates> getEmptyFieldsList(List<Coordinates> coordsList) {
-        List<Coordinates> emptyFieldsCoords = new ArrayList<Coordinates>();
-        for (Coordinates toRemove : coordsList) {
-            if (Board.INSTANCE.getField(toRemove) == null)
-                emptyFieldsCoords.add(toRemove);
-        }
-        return emptyFieldsCoords;
-    }
-
-
     private List<Coordinates> getFieldsToRemoveAfterTwoPawnsInRow() {
         List<Coordinates> arrayListToRemove = new ArrayList<>();
+
         for (Coordinates pawnCd : coordsStates.get("enemy")) {
             addFieldsToRemoveIfPawnIsInRow(pawnCd, arrayListToRemove);
         }
-        List<Coordinates> listWithoutDuplicates = new ArrayList<>(
-                new HashSet<>(arrayListToRemove));
+        List<Coordinates> listWithoutDuplicates
+                = new ArrayList<>(new HashSet<>(arrayListToRemove));
+
         return listWithoutDuplicates;
     }
+    private List<Coordinates> getEmptyFieldsAfterPawns(List<Coordinates> pawnsCoordinates){
+        List<Coordinates> coordinatesToFilter = new ArrayList<Coordinates>();
+        List<Coordinates> emptyFieldsAfterPawns = new ArrayList<Coordinates>();
 
+        for (Coordinates allyField : pawnsCoordinates) {
+            if (leftTop.contains(allyField))
+                coordinatesToFilter = allyField.getTopLeftCoordinates();
+            else if (rightTop.contains(allyField))
+                coordinatesToFilter = allyField.getTopRightCoordinates();
+            else if (rightBottom.contains(allyField))
+                coordinatesToFilter = allyField.getBottomRightCoordinates();
+            else if (leftBottom.contains(allyField))
+                coordinatesToFilter = allyField.getBottomLeftCoordinates();
+
+            List<Coordinates> emptyFieldsAfterAllyPawn = getEmptyFieldsFromList(coordinatesToFilter);
+            emptyFieldsAfterPawns.addAll(emptyFieldsAfterAllyPawn);
+        }
+        return emptyFieldsAfterPawns;
+    }
 
     private void addFieldsToRemoveIfPawnIsInRow(Coordinates pawnCd, List<Coordinates> listToRemove) {
         List<Coordinates> fieldsAfterTwoInRows = new ArrayList<Coordinates>();
         Coordinates fieldAfterCoord = null;
         if (leftTop.contains(pawnCd)) {
             fieldAfterCoord = pawnCd.getNextTopLeft();
+
             if (!Board.INSTANCE.isFieldEmpty(fieldAfterCoord))
                 fieldsAfterTwoInRows.addAll(fieldAfterCoord.getTopLeftCoordinates());
-        }
-        else if (rightTop.contains(pawnCd)){
+        } else if (rightTop.contains(pawnCd)){
             fieldAfterCoord = pawnCd.getNextTopRight();
+
             if (!Board.INSTANCE.isFieldEmpty(fieldAfterCoord))
                 fieldsAfterTwoInRows.addAll(fieldAfterCoord.getTopRightCoordinates());
-        }
-        else if (rightBottom.contains(pawnCd)){
+        } else if (rightBottom.contains(pawnCd)){
             fieldAfterCoord = pawnCd.getNextBottomRight();
+
             if (!Board.INSTANCE.isFieldEmpty(fieldAfterCoord))
                 fieldsAfterTwoInRows.addAll(fieldAfterCoord.getBottomRightCoordinates());
-        }
-        else if (leftBottom.contains(pawnCd)){
+        } else if (leftBottom.contains(pawnCd)){
             fieldAfterCoord = pawnCd.getNextBottomLeft();
+
             if (!Board.INSTANCE.isFieldEmpty(fieldAfterCoord))
                 fieldsAfterTwoInRows.addAll(fieldAfterCoord.getBottomLeftCoordinates());
         }
-        listToRemove.addAll(getEmptyFieldsList(fieldsAfterTwoInRows));
+        listToRemove.addAll(getEmptyFieldsFromList(fieldsAfterTwoInRows));
+    }
+
+    private List<Coordinates> getEmptyFieldsFromList(List<Coordinates> coordsList) {
+        List<Coordinates> emptyFieldsCoords = new ArrayList<Coordinates>();
+        for (Coordinates toRemove : coordsList) {
+            if (Board.INSTANCE.getField(toRemove) == null)
+                emptyFieldsCoords.add(toRemove);
+        }
+        return emptyFieldsCoords;
     }
 
     private void setEmptyLists () {
